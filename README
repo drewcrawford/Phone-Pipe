@@ -1,0 +1,12 @@
+phonepipe lets you send push notifications to your phone from the commandline.
+
+To install, use
+	python phone.py ---install
+
+To notify yourself when the compile is done, use
+	make; phone
+
+To copy your ip addresses, use
+	ifconfig | grep inet | phone
+
+All phonepipe arguments begin with '---'.  The reason is because I am occasionally so
