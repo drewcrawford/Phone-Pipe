@@ -5,6 +5,11 @@ phonepipe will take your credentials from standard input and save them to ~/.pho
 To install, use
 	python phone.py ---install
 
+Python <=2.4 users see the section at the end.
+
+
+	
+
 To notify yourself when the compile is done, use
 	make; phone
 
@@ -24,3 +29,11 @@ label: label of the message.  For most notifo notifications, this indicates the 
 url: Notifo has a URL field that allows you to navigate to that URL with a tap from inside the app.
 
 phonepipe also accepts a message from standard input.
+
+PYTHON 2.4 INSTALL:
+On Python2.4, you need simplejson.  To get it:
+	wget http://peak.telecommunity.com/dist/ez_setup.py
+	sudo python ez_setup.py
+	easy_install simplejson
+	python phone.py ---install
+

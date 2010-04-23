@@ -11,7 +11,10 @@
 
 import urllib
 import sys
-import json
+try:
+    import json
+except:
+    import simplejson as json
 
 
     
