@@ -1,4 +1,6 @@
-phonepipe lets you send push notifications to your phone from the commandline.
+phonepipe lets you send push notifications to your iPhone/iPod Touch/iPad from the commandline  You need to have the Notifo app installed on your device.
+
+phonepipe will take your credentials from standard input and save them to ~/.phonepipe on the first run.
 
 To install, use
 	python phone.py ---install
@@ -9,4 +11,16 @@ To notify yourself when the compile is done, use
 To copy your ip addresses, use
 	ifconfig | grep inet | phone
 
-All phonepipe arguments begin with '---'.  The reason is because I am occasionally so
+All phonepipe arguments begin with '---'.  The reason is because I am occasionally so lazy as to not enquote the messages I want to send (and I occasionally send messages with '--' in them, i.e. outputs of commands, etc.), so phonepipe accepts unquoted command line arguments as a message.  Both of these do the same thing:
+
+	phone send this message
+	phone "send this message"
+
+Usage:
+	phone [---title=<title>] [---label=<label>] [---url=<url>] [message]
+
+title: title of the message, usually given its own line
+label: label of the message.  For most notifo notifications, this indicates the name of the sending service.  
+url: Notifo has a URL field that allows you to navigate to that URL with a tap from inside the app.
+
+phonepipe also accepts a message from standard input.

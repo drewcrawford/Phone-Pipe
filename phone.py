@@ -1,5 +1,12 @@
 #!/usr/bin/env python
-
+"""This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details.
+ 
+ If you do find a use for it, please consider submitting patches to http://github.com/drewcrawford/Phone-Pipe
+ or just shooting me an e-mail at drew@sealedabstract.com"""
 
 
 import urllib
