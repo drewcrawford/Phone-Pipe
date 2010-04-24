@@ -27,6 +27,8 @@ Usage:
 title: title of the message, usually given its own line
 label: label of the message.  For most notifo notifications, this indicates the name of the sending service.  
 url: Notifo has a URL field that allows you to navigate to that URL with a tap from inside the app.
+username: overrides the user-level username
+secret: overrides the user-level secret
 
 phonepipe also accepts a message from standard input.
 

@@ -42,6 +42,15 @@ def get_settings_file():
     import os.path
     return os.path.expanduser("~/.phonepipe")
 def get_credentials():
+    username = None
+    secret = None
+    for arg in sys.argv:
+        if arg.startswith("---username="):
+            username = arg[12:]
+        elif arg.startswith("---secret="):
+            secret = arg[10:]
+    if username is not None and secret is not None:
+        return (username,secret)
     import os.path
     if not os.path.exists(get_settings_file()):
         set_credentials()
