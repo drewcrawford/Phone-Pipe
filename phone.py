@@ -100,7 +100,11 @@ if len(sys.argv) >1:
         else:
             msg += arg + " "
 if not sys.stdin.isatty():
-    msg += sys.stdin.read()
+    try:
+        for s in sys.stdin.readlines():
+            msg += s
+    except:
+        print "error reading from stdin"
 if msg=="":
     msg = "Phone Pipe Alert"
 alert(msg,url=url,title=title,label=label)
