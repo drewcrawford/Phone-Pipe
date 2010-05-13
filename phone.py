@@ -74,7 +74,7 @@ def set_credentials():
     
 def alert(msg,url=None,title="phonepipe",label="phonepipe"):  
     msg = msg.strip()
-    data = {"title":title,"msg":msg,"label":label,"url":url==None and "" or url}
+    data = {"title":title,"msg":msg,"label":label,"uri":url==None and "" or url}
     try:
         file = urllib.urlopen("https://%s:%s@api.notifo.com/v1/send_notification"% get_credentials(),urllib.urlencode(data))
     except IOError: 
