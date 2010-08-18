@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+"""This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details.
+ 
+ If you do find a use for it, please consider submitting patches to http://github.com/drewcrawford/Phone-Pipe
+ or just shooting me an e-mail at drew@sealedabstract.com"""
+
+import getpass
+import os
+import sys
+import textwrap
+import urllib
+
+try:
+    import simplejson as json
+except:
+    import json
+
+
+API_URL = "https://%(username)s:%(secret)s@api.notifo.com/v1/send_notification"
+SETTINGS = os.path.expanduser("~/.phonepipe")
+
+def get_credentials():
+    username = None
+    secret = None
+    for arg in sys.argv:
+        if arg.startswith("---username="):
+            username = arg[12:]
+        elif arg.startswith("---secret="):
+            secret = arg[10:]
+    if username is not None and secret is not None:
+        return {"username": user, "secret": secret}
+    if not os.path.exists(SETTINGS):
+        set_credentials()
+    handle = open(SETTINGS)
+    try:
+        return json.load(handle)
+    finally:
+        handle.close()
+
+def set_credentials():
+    username = raw_input("Username: ")
+    print textwrap.dedent("""
+    You can find your API secret in your Notify
+    account settings. Leave the field blank to
+    launch your browser.
+    """)
+    while True:
+        secret = getpass.getpass("API Scret: ")
+        if len(secret.strip()):
+            handle = open(SETTINGS, "w")
+            try:
+                settings = {"username": username, "secret": secret}
+                json.dump(settings, handle, indent=2)
+            except:
+                handle.close()
+            return
+        run_file("http://notifo.com/user/settings")
+
+def run_file(file):
+    if sys.platform == "darwin":
+        os.system("open %s" % file)
+    elif sys.platform == "linux2":
+        os.system("xdg-open %s" % file)
+    else:
+        os.startfile(file)
+
+def alert(msg, url=None, title="phonepipe", label="phonepipe"):
+    msg = msg.strip()
+    url = API_URL % get_credentials()
+    data = urllib.urlencode({
+        "title": title,
+        "msg": msg,
+        "label": label,
+        "uri":  url if url is not None else ""
+    })
+    data = urllib.urlopen(url, data)
+    try:
+        try:
+            result = json.load(data)
+        except IOError: 
+            print "Failed to send message. Maybe your credentials are wrong?"
+            print "Error: %s" % sys.exc_info()[1]
+            set_credentials()
+            alert(msg, url, title)
+            return
+    finally:
+        data.close()
+    
+    if result["status"] != "success" or result["response_message"] != "OK":
+        print "Notifo reported an error."
+        print "Status: %s" % result["status"]
+        print "Message: %s" % result["response_message"]
+        sys.exit(1)
+
+def main():
+    msg = []
+    url = None
+    title = "phonepipe"
+    label = "phonepipe"
+    for arg in sys.argv[1:]:
+        if arg.startswith("---url="):
+            url = arg[7:]
+        elif arg.startswith("---title="):
+            title = arg[9:]
+        elif arg.startswith("--label="):
+            label = label[9:]
+        else:
+            msg.append(arg)
+    msg = [" ".join(msg)]
+    if not sys.stdin.isatty():
+        try:
+            for line in sys.stdin.readlines():
+                msg.append(line)
+        except:
+            print "Failed to read message from stdin."
+    msg = "".join(msg)
+    if not msg:
+        msg = "Phone Pipe Alert"
+    alert(msg, url=url, title=title, label=label)
+
+if __name__ == '__main__':
+    main()
