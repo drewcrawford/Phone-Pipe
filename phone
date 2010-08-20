@@ -109,8 +109,8 @@ def main():
             url = arg[7:]
         elif arg.startswith("---title="):
             title = arg[9:]
-        elif arg.startswith("--label="):
-            label = label[9:]
+        elif arg.startswith("---label="):
+            label = arg[9:]
         else:
             msg.append(arg)
     msg = [" ".join(msg)]
