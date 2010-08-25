@@ -21,7 +21,7 @@ Rtorrent (0.8.4+) notification on download complete
 
 Add this line to ~/.rtorrent.rc:
 
-	system.method.set_key = event.download.finished,notify_me,"execute=/usr/local/bin/phone,---title=rtorrent,$d.get_name="
+	system.method.set_key = event.download.finished,notify_me,"execute=/usr/local/bin/phone,--title=rtorrent,--,$d.get_name="
 
 Notify when user logs in on Mac OSX 10.3+
 -----------------------------------------
@@ -29,7 +29,7 @@ Notify when user logs in on Mac OSX 10.3+
 Stick this in /Library/Scripts/login.sh:
 
     #!/bin/bash
-	/usr/local/bin/phone ---username=<username> ---secret=<secret> ---title="`hostname` login" $1
+	/usr/local/bin/phone --username=<username> --secret=<secret> --title="`hostname` login" $1
 
 Then run this:	
 	

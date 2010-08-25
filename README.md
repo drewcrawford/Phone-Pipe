@@ -29,14 +29,17 @@ The first time you run Phone Pipe it will prompt you for your credentials. It
 will store these in ~/.phonepipe for future use. Alternatively you can also
 specify your username and API key on the command line like such:
 
-    $ phone ---user=someuser ---secret=b52e5fd8b6f14d799798172c1b62c7eb
+    $ phone --user=someuser --secret=b52e5fd8b6f14d799798172c1b62c7eb
 
 
 Usage
 -----
 
-All options are triple hyphen prefixed to avoid being squashed by cut and
-paste output or other bits that might be sent in messages.
+phone [options] [--] [msg]
+
+The options are described below.  If you are concerned about the message given
+on the command line containing dashes and therefore looking like arguments, you
+may include a double dash before the message give on the command line.
 
     ---title - The title of the message.
     ---label - A message label, generally the name of the sending service.
@@ -56,7 +59,7 @@ Examples
 --------
     
     # First message
-    $ phon first message
+    $ phone first message
 
     # Notify yourself when the compile is done
     $ make; phone

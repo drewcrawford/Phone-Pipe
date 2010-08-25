@@ -9,8 +9,11 @@
 If you do find a use for it, please consider submitting patches to
 http://github.com/drewcrawford/Phone-Pipe or just shooting me an
 e-mail at drew@sealedabstract.com
-"""
 
+
+Usage: %prog [options] [--] [msg]"""
+
+import optparse
 import getpass
 import os
 import sys
@@ -26,14 +29,7 @@ except:
 API_URL = "https://%(username)s:%(secret)s@api.notifo.com/v1/send_notification"
 SETTINGS = os.path.expanduser("~/.phonepipe")
 
-def get_credentials():
-    username = None
-    secret = None
-    for arg in sys.argv:
-        if arg.startswith("---username="):
-            username = arg[12:]
-        elif arg.startswith("---secret="):
-            secret = arg[10:]
+def get_credentials(username = None, secret = None):
     if username is not None and secret is not None:
         return {"username": user, "secret": secret}
     if not os.path.exists(SETTINGS):
@@ -71,9 +67,9 @@ def run_file(file):
     else:
         os.startfile(file)
 
-def alert(msg, url=None, title="phonepipe", label="phonepipe"):
+def alert(msg, url=None, title="phonepipe", label="phonepipe", username=None, secret = None):
     msg = msg.strip()
-    url = API_URL % get_credentials()
+    url = API_URL % get_credentials(username, secret)
     data = urllib.urlencode({
         "title": title,
         "msg": msg,
@@ -101,19 +97,28 @@ def alert(msg, url=None, title="phonepipe", label="phonepipe"):
 
 def main():
     msg = []
-    url = None
-    title = "phonepipe"
-    label = "phonepipe"
-    for arg in sys.argv[1:]:
-        if arg.startswith("---url="):
-            url = arg[7:]
-        elif arg.startswith("---title="):
-            title = arg[9:]
-        elif arg.startswith("---label="):
-            label = arg[9:]
-        else:
-            msg.append(arg)
-    msg = [" ".join(msg)]
+
+    parser = optparse.OptionParser()
+    parser.usage = __doc__
+    parser.add_option("-u", "--username",
+                      action="store", dest="username", default=None,
+                      help="Override your ~/.phonepipe if you specify a secret as well.")
+    parser.add_option("-s", "--secret",
+                      action="store", dest="secret", default=None,
+                      help="Override your ~/.phonepipe when specified with a username.")
+    parser.add_option("-t", "--title",
+                      action="store", dest="title", type="str", default="phonepipe",
+                      help="The title of the message. (default: 'phonepipe')")
+    parser.add_option("-l", "--label",
+                      action="store", dest="label", type="str", default="phonepipe",
+                      help="A message label, generally the name of the sending service. (default: 'phonepipe')")
+    parser.add_option("", "--url",
+                      action="store", dest="url", default=None,
+                      help="If specified, the Notifo app makes a link from the message to it.")
+    (options, args) = parser.parse_args()
+    if len(args) > 0:
+        msg = [ " ".join(args) ]
+
     if not sys.stdin.isatty():
         try:
             for line in sys.stdin.readlines():
@@ -123,7 +128,7 @@ def main():
     msg = "".join(msg)
     if not msg:
         msg = "Phone Pipe Alert"
-    alert(msg, url=url, title=title, label=label)
+    alert(msg, url=options.url, title=options.title, label=options.label, username=options.username, secret=options.secret)
 
 if __name__ == '__main__':
     main()
