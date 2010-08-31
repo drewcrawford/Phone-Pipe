@@ -29,7 +29,7 @@ The first time you run Phone Pipe it will prompt you for your credentials. It
 will store these in ~/.phonepipe for future use. Alternatively you can also
 specify your username and API key on the command line like such:
 
-    $ phone --user=someuser --secret=b52e5fd8b6f14d799798172c1b62c7eb
+    $ phone --username=someuser --secret=b52e5fd8b6f14d799798172c1b62c7eb
 
 
 Usage

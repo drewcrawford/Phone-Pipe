@@ -31,7 +31,7 @@ SETTINGS = os.path.expanduser("~/.phonepipe")
 
 def get_credentials(username = None, secret = None):
     if username is not None and secret is not None:
-        return {"username": user, "secret": secret}
+        return {"username": username, "secret": secret}
     if not os.path.exists(SETTINGS):
         set_credentials()
     handle = open(SETTINGS)
@@ -48,7 +48,7 @@ def set_credentials():
     launch your browser.
     """)
     while True:
-        secret = getpass.getpass("API Scret: ")
+        secret = getpass.getpass("API Secret: ")
         if len(secret.strip()):
             handle = open(SETTINGS, "w")
             try:
