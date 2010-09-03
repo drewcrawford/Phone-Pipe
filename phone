@@ -69,14 +69,14 @@ def run_file(file):
 
 def alert(msg, url=None, title="phonepipe", label="phonepipe", username=None, secret = None):
     msg = msg.strip()
-    url = API_URL % get_credentials(username, secret)
+    apiurl = API_URL % get_credentials(username, secret)
     data = urllib.urlencode({
         "title": title,
         "msg": msg,
         "label": label,
         "uri":  url if url is not None else ""
     })
-    data = urllib.urlopen(url, data)
+    data = urllib.urlopen(apiurl, data)
     try:
         try:
             result = json.load(data)
