@@ -41,11 +41,11 @@ The options are described below.  If you are concerned about the message given
 on the command line containing dashes and therefore looking like arguments, you
 may include a double dash before the message give on the command line.
 
-    ---title - The title of the message.
-    ---label - A message label, generally the name of the sending service.
-    ---url - If specified, the Notifo app makes a link from the message to it.
-    ---username - Override your ~/.phonepipe if you specify a secret as well.
-    ---secret - Override your ~/.phonepipe when specified with a username.
+    --title - The title of the message.
+    --label - A message label, generally the name of the sending service.
+    --url - If specified, the Notifo app makes a link from the message to it.
+    --username - Override your ~/.phonepipe if you specify a secret as well.
+    --secret - Override your ~/.phonepipe when specified with a username.
 
 
 Messages are taken from unknown command line arguments and stdin. The
