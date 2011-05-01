@@ -50,12 +50,14 @@ def set_credentials():
     while True:
         secret = getpass.getpass("API Secret: ")
         if len(secret.strip()):
+            umask = os.umask(066)
             handle = open(SETTINGS, "w")
             try:
                 settings = {"username": username, "secret": secret}
                 json.dump(settings, handle, indent=2)
             except:
                 handle.close()
+                os.umask(umask)
             return
         run_file("http://notifo.com/user/settings")
 
